@@ -1,4 +1,5 @@
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
 import express, { json, urlencoded } from 'express';
 
 import { authMiddleware } from './middleware/auth';
@@ -10,6 +11,7 @@ app.use(urlencoded({ extended: false }));
 app.use(json());
 app.use(cookieParser());
 app.use(authMiddleware());
+app.use(cors());
 
 configureRoutes(app);
 

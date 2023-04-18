@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt';
+import { AuthResponseMessages } from 'config/auth';
 
 import {
     ISessionUser,
@@ -38,7 +39,9 @@ export class AuthService implements IAuthService {
         const doPasswordMatch = bcrypt.compareSync(password, user.passwordHash);
 
         if (!doPasswordMatch) {
-            throw new IncorrectPasswordError('неверный пароль');
+            throw new IncorrectPasswordError(
+                AuthResponseMessages.INCORRECT_PASSWORD
+            );
         }
 
         return {

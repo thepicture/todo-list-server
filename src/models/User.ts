@@ -1,3 +1,5 @@
+import { AuthResponseMessages } from 'config/auth';
+import { db } from 'config/database';
 import { STUB_LOGIN, STUB_USER } from 'config/user';
 
 export interface IUser {
@@ -28,7 +30,18 @@ export class IncorrectPasswordError extends Error {}
 
 export class UserRepository implements IUserRepository {
     async findByLogin(login: string): Promise<IUser> {
-        return STUB_USER;
+        const user = await db('user')
+            .where({ login })
+            .first()
+            .then<IUser>((row) => row);
+
+        if (!user) {
+            throw new LoginNotFoundError(
+                AuthResponseMessages.LOGIN_NOT_FOUND(login)
+            );
+        }
+
+        return user;
     }
 }
 
@@ -39,7 +52,7 @@ export class StubUserRepository implements IUserRepository {
         }
 
         throw new LoginNotFoundError(
-            `пользователя с логином ${login} не существует`
+            AuthResponseMessages.LOGIN_NOT_FOUND(login)
         );
     }
 }
