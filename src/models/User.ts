@@ -2,38 +2,35 @@ import { AuthResponseMessages } from 'config/auth';
 import { db } from 'config/database';
 import { STUB_LOGIN, STUB_USER } from 'config/user';
 
-export interface IUser {
+export type User = {
     id: number;
+
     firstName: string;
     lastName: string;
     patronymic: string;
+
     login: string;
     passwordHash: string;
-    director?: ISessionUser;
-}
 
-export interface ISessionUser {
-    id: number;
-    firstName: string;
-    lastName: string;
-    patronymic: string;
-    login: string;
-    director?: ISessionUser;
-}
+    directorId: number;
+    director?: SessionUser;
+};
+
+export type SessionUser = Omit<User, 'passwordHash'>;
 
 export interface IUserRepository {
-    findByLogin: (login: string) => Promise<IUser>;
+    findByLogin: (login: string) => Promise<User>;
 }
 
 export class LoginNotFoundError extends Error {}
 export class IncorrectPasswordError extends Error {}
 
 export class UserRepository implements IUserRepository {
-    async findByLogin(login: string): Promise<IUser> {
+    async findByLogin(login: string): Promise<User> {
         const user = await db('user')
             .where({ login })
             .first()
-            .then<IUser>((row) => row);
+            .then<User>((row) => row);
 
         if (!user) {
             throw new LoginNotFoundError(
@@ -46,7 +43,7 @@ export class UserRepository implements IUserRepository {
 }
 
 export class StubUserRepository implements IUserRepository {
-    async findByLogin(login: string): Promise<IUser> {
+    async findByLogin(login: string): Promise<User> {
         if (login === STUB_LOGIN) {
             return STUB_USER;
         }

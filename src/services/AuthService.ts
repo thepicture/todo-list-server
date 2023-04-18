@@ -2,16 +2,16 @@ import bcrypt from 'bcrypt';
 import { AuthResponseMessages } from 'config/auth';
 
 import {
-    ISessionUser,
     IUserRepository,
     IncorrectPasswordError,
+    SessionUser,
 } from 'models/User';
 
 interface IAuthService {
     tryGetUserByLoginAndPassword: (
         login: string,
         password: string
-    ) => Promise<ISessionUser>;
+    ) => Promise<SessionUser>;
 }
 
 /**
@@ -33,7 +33,7 @@ export class AuthService implements IAuthService {
     async tryGetUserByLoginAndPassword(
         login: string,
         password: string
-    ): Promise<ISessionUser> {
+    ): Promise<SessionUser> {
         const user = await this.userRepository.findByLogin(login);
 
         const doPasswordMatch = bcrypt.compareSync(password, user.passwordHash);

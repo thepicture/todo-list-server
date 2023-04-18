@@ -7,11 +7,16 @@ import configureRoutes from './routes';
 
 const app = express();
 
+app.use(
+    cors({
+        origin: process.env.CLIENT_ORIGIN,
+        credentials: true,
+    })
+);
 app.use(urlencoded({ extended: false }));
 app.use(json());
 app.use(cookieParser());
 app.use(authMiddleware());
-app.use(cors());
 
 configureRoutes(app);
 

@@ -1,10 +1,10 @@
 import { STUB_PASSWORD_HASH } from 'config';
 
-import { IUser } from 'models/User';
+import { User } from 'models/User';
 
 export const STUB_LOGIN = 'responsible';
 
-export const STUB_USER: IUser = {
+export const STUB_USER: User = {
     id: 1,
     firstName: 'Иван',
     lastName: 'Иванов',
