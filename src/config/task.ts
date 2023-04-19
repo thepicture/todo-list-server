@@ -14,6 +14,7 @@ export const MOCK_TASKS = [
         priority: 'high',
         status: 'todo',
 
+        creatorId: 1,
         responsibleUser: STUB_USER,
         responsibleUserId: STUB_USER.id,
     },
@@ -30,6 +31,7 @@ export const MOCK_TASKS = [
         priority: 'medium',
         status: 'inprogress',
 
+        creatorId: 2,
         responsibleUser: STUB_USER,
         responsibleUserId: STUB_USER.id,
     },
@@ -44,8 +46,9 @@ export const MOCK_TASKS = [
         updateTimestamp: Date.now() - 100 * 60,
 
         priority: 'low',
-        status: 'completed',
+        status: 'done',
 
+        creatorId: 3,
         responsibleUser: STUB_USER,
         responsibleUserId: STUB_USER.id,
     },

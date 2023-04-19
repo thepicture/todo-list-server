@@ -5,19 +5,13 @@ import {
     IUserRepository,
     IncorrectPasswordError,
     SessionUser,
+    UserRepository,
 } from 'models/User';
-
-interface IAuthService {
-    tryGetUserByLoginAndPassword: (
-        login: string,
-        password: string
-    ) => Promise<SessionUser>;
-}
 
 /**
  * Валидатор логина и пароля.
  */
-export class AuthService implements IAuthService {
+export class AuthService {
     userRepository: IUserRepository;
 
     constructor(userRepository: IUserRepository) {
@@ -44,19 +38,6 @@ export class AuthService implements IAuthService {
             );
         }
 
-        return {
-            id: 1,
-            firstName: 'Иван',
-            lastName: 'Иванов',
-            patronymic: 'Иванович',
-            login: 'responsible',
-            director: {
-                id: 2,
-                firstName: 'Пётр',
-                lastName: 'Петров',
-                patronymic: 'Петрович',
-                login: 'director',
-            },
-        };
+        return user;
     }
 }

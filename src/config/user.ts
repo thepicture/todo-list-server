@@ -11,11 +11,13 @@ export const STUB_USER: User = {
     patronymic: 'Иванович',
     login: 'responsible',
     passwordHash: STUB_PASSWORD_HASH,
+    directorId: 2,
     director: {
         id: 2,
         firstName: 'Пётр',
         lastName: 'Петров',
         patronymic: 'Петрович',
         login: 'director',
+        directorId: null,
     },
 };

@@ -1,3 +1,5 @@
+const randomPick = (array) => array[Math.floor(Math.random() * array.length)];
+
 /**
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
@@ -5,10 +7,18 @@
 exports.seed = async function (knex) {
     await knex('task').del();
 
+    const firstUserId = await knex('user')
+        .select(['id'])
+        .first()
+        .then((row) => row.id);
+
+    const directorIds = await knex('user')
+        .select(['id'])
+        .where({ directorId: null })
+        .then((rows) => rows.map((row) => row.id));
+
     await knex('task').insert([
         {
-            id: 1,
-
             title: 'Task 1',
             description: 'lorem ipsum lorem ipsum lorem ipsum',
 
@@ -19,11 +29,10 @@ exports.seed = async function (knex) {
             priority: 'high',
             status: 'todo',
 
-            responsibleUserId: 2,
+            creatorId: randomPick(directorIds),
+            responsibleUserId: firstUserId,
         },
         {
-            id: 2,
-
             title: 'Task 2',
             description: 'lorem ipsum lorem ipsum lorem ipsum',
 
@@ -34,11 +43,10 @@ exports.seed = async function (knex) {
             priority: 'medium',
             status: 'inprogress',
 
-            responsibleUserId: 2,
+            creatorId: randomPick(directorIds),
+            responsibleUserId: firstUserId + 1,
         },
         {
-            id: 3,
-
             title: 'Task 3',
             description: 'lorem ipsum lorem ipsum',
 
@@ -49,11 +57,10 @@ exports.seed = async function (knex) {
             priority: 'low',
             status: 'done',
 
-            responsibleUserId: 3,
+            creatorId: randomPick(directorIds),
+            responsibleUserId: firstUserId + 1,
         },
         {
-            id: 4,
-
             title: 'Task 4',
             description: 'lorem ipsum lorem ipsum',
 
@@ -64,7 +71,23 @@ exports.seed = async function (knex) {
             priority: 'low',
             status: 'cancelled',
 
-            responsibleUserId: 3,
+            creatorId: randomPick(directorIds),
+            responsibleUserId: firstUserId + 2,
+        },
+        {
+            title: 'Task 5',
+            description:
+                'lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum',
+
+            deadlineTimestamp: Date.now() + 1000 * 60 * 60 * 2,
+            creationTimestamp: Date.now(),
+            updateTimestamp: Date.now() - 100 * 60,
+
+            priority: 'low',
+            status: 'cancelled',
+
+            creatorId: randomPick(directorIds),
+            responsibleUserId: firstUserId + 2,
         },
     ]);
 };
