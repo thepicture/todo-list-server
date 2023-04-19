@@ -1,14 +1,8 @@
-import fs from 'fs';
+export const DEFAULT_ENCODING = 'utf8';
 
 export const BASE_URL = '/api';
 
 export const ROUTES_PATH = './src/routes';
-
-export const RATING_URL = `/rating`;
-
-export const DEFAULT_ENCODING = 'utf8';
-
-export const PASSWORD_HASH_PATH = './src/.password_hash';
 
 export const STUB_LOGIN = 'responsible';
 
