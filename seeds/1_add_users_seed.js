@@ -10,60 +10,62 @@ const PASSWORD_SALT = 10;
 exports.seed = async function (knex) {
     await knex('user').del();
 
-    await knex('user').insert([
-        {
-            id: 1,
+    const firstDirectorId = await knex('user')
+        .insert({
             firstName: 'Иван',
             lastName: 'Иванов',
             patronymic: 'Иванович',
-            login: 'admin',
+            login: 'admin1',
             passwordHash: bcrypt.hashSync(STUB_PASSWORD, PASSWORD_SALT),
             directorId: null,
-        },
-        {
-            id: 2,
-            firstName: 'Пётр',
-            lastName: 'Петров',
-            patronymic: 'Петрович',
-            login: 'responsible',
-            passwordHash: bcrypt.hashSync(STUB_PASSWORD, PASSWORD_SALT),
-            directorId: 1,
-        },
-        {
-            id: 3,
-            firstName: 'Пётр',
-            lastName: 'Иванов',
-            patronymic: 'Петрович',
-            login: 'responsible2',
-            passwordHash: bcrypt.hashSync(STUB_PASSWORD, PASSWORD_SALT),
-            directorId: 1,
-        },
-        {
-            id: 4,
+        })
+        .returning('id')
+        .then((row) => row[0].id);
+
+    const secondDirectorId = await knex('user')
+        .insert({
             firstName: 'Иван',
             lastName: 'Иванов',
             patronymic: 'Иванович',
             login: 'admin2',
             passwordHash: bcrypt.hashSync(STUB_PASSWORD, PASSWORD_SALT),
             directorId: null,
+        })
+        .returning('id')
+        .then((row) => row[0].id);
+
+    await knex('user').insert([
+        {
+            firstName: 'Пётр',
+            lastName: 'Петров',
+            patronymic: 'Петрович',
+            login: 'responsible',
+            passwordHash: bcrypt.hashSync(STUB_PASSWORD, PASSWORD_SALT),
+            directorId: firstDirectorId,
         },
         {
-            id: 5,
+            firstName: 'Пётр',
+            lastName: 'Иванов',
+            patronymic: 'Петрович',
+            login: 'responsible2',
+            passwordHash: bcrypt.hashSync(STUB_PASSWORD, PASSWORD_SALT),
+            directorId: firstDirectorId,
+        },
+        {
             firstName: 'Иван',
             lastName: 'Петров',
             patronymic: 'Петрович',
-            login: 'responsible5',
+            login: 'responsible3',
             passwordHash: bcrypt.hashSync(STUB_PASSWORD, PASSWORD_SALT),
-            directorId: 2,
+            directorId: secondDirectorId,
         },
         {
-            id: 6,
             firstName: 'Иван',
             lastName: 'Иванов',
             patronymic: 'Петрович',
-            login: 'responsible6',
+            login: 'responsible4',
             passwordHash: bcrypt.hashSync(STUB_PASSWORD, PASSWORD_SALT),
-            directorId: 2,
+            directorId: secondDirectorId,
         },
     ]);
 };

@@ -2,6 +2,8 @@ import { AuthResponseMessages } from 'config/auth';
 import { db } from 'config/database';
 import { STUB_LOGIN, STUB_USER } from 'config/user';
 
+import { responsibleSelector } from 'utils/selectors';
+
 export type User = {
     id: number;
 
@@ -20,6 +22,9 @@ export type SessionUser = Omit<User, 'passwordHash'>;
 
 export interface IUserRepository {
     findByLogin: (login: string) => Promise<User>;
+    getResponsibleUserByDirectorId: (
+        directorId: number
+    ) => Promise<SessionUser[]>;
 }
 
 export class LoginNotFoundError extends Error {}
@@ -40,6 +45,15 @@ export class UserRepository implements IUserRepository {
 
         return user;
     }
+
+    async getResponsibleUserByDirectorId(
+        directorId: number
+    ): Promise<SessionUser[]> {
+        return await db('user')
+            .select(responsibleSelector)
+            .where({ directorId })
+            .then((rows) => rows);
+    }
 }
 
 export class StubUserRepository implements IUserRepository {
@@ -51,5 +65,11 @@ export class StubUserRepository implements IUserRepository {
         throw new LoginNotFoundError(
             AuthResponseMessages.LOGIN_NOT_FOUND(login)
         );
+    }
+
+    async getResponsibleUserByDirectorId(
+        _directorId: number
+    ): Promise<SessionUser[]> {
+        return Promise.resolve([]);
     }
 }

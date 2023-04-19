@@ -6,3 +6,12 @@ export const taskSelector = [
     'user.login',
     'user.directorId',
 ];
+
+export const responsibleSelector = [
+    'user.id',
+    'user.firstName',
+    'user.lastName',
+    'user.patronymic',
+    'user.directorId',
+    'user.login',
+];

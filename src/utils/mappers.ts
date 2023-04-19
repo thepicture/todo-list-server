@@ -15,6 +15,7 @@ export const mapAsTask = (row: TaskDto & User) => ({
     status: row.status,
 
     responsibleUserId: row.responsibleUserId,
+    creatorId: row.creatorId,
     responsibleUser: {
         id: row.responsibleUserId,
 

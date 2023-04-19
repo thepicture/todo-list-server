@@ -7,7 +7,7 @@ exports.up = function (knex) {
         table.increments('id');
 
         table.string('title').checkLength('<', 64).notNullable();
-        table.string('description').checkLength('<', 64).nullable();
+        table.string('description').checkLength('<', 1024).nullable();
 
         table.bigint('deadlineTimestamp').notNullable();
         table.bigint('creationTimestamp').notNullable();
@@ -17,6 +17,12 @@ exports.up = function (knex) {
         table
             .enum('status', ['todo', 'inprogress', 'done', 'cancelled'])
             .notNullable();
+
+        table
+            .integer('creatorId')
+            .notNullable()
+            .references('user.id')
+            .onDelete('CASCADE');
 
         table
             .integer('responsibleUserId')
